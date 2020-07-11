@@ -53,5 +53,24 @@ public class RecursiveDemo1 {
         return n == 1 ? 1 : (n == 2 ? 1 :fibonacci(n - 1) + fibonacci(n - 2));
     }
 
+    /**
+     * 汉诺塔
+     * @param n n个盘⼦
+     * @param start 起始柱⼦
+     * @param transfer 中转柱⼦
+     * @param target ⽬标柱⼦
+     */
+    public static void hanoi(int n, char start, char transfer, char target) {
+        //只有⼀个盘⼦，直接搬到⽬标柱⼦
+        if (n == 1) {
+            System.out.println(start + "---->" + target);
+        } else {
+            //起始柱⼦借助⽬标柱⼦将盘⼦都移动到中转柱⼦中(除了最⼤的盘⼦)
+            hanoi(n - 1, start, target, transfer);
+            System.out.println(start + "---->" + target);
+            //中转柱⼦借助起始柱⼦将盘⼦都移动到⽬标柱⼦中
+            hanoi(n - 1, transfer, start, target);
+        }
+    }
 
 }

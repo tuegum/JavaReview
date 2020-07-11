@@ -12,14 +12,22 @@ public class recursiveTest {
         System.out.println("MAX = " + RecursiveDemo1.findMax(arrays,0,arrays.length-1));
     }
 
+    //冒泡排序递归算法测试
     @Test
     public void bubbleTest(){
         int[] arrays = recursiveUtils.getArrays();
         RecursiveDemo1.bubbleSort(arrays,0,arrays.length-1);
     }
 
+    //斐波拉契数列
     @Test
     public void fibonacciTest(){
         System.out.println(RecursiveDemo1.fibonacci(3));
+    }
+
+    //汉诺塔
+    @Test
+    public void hanoiTest(){
+        RecursiveDemo1.hanoi(3, 'A','B','C');
     }
 }

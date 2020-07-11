@@ -1,0 +1,30 @@
+四、List集合总结
+其实集合的源码看起来并不是很困难，遇到问题可以翻⼀翻，应该是能够看懂的~
+ public E get(int index) {
+ checkElementIndex(index);
+ return node(index).item;
+ }
+ public E set(int index, E element) {
+ checkElementIndex(index);
+ Node<E> x = node(index);
+ E oldVal = x.item;
+ x.item = element;
+ return oldVal;
+ }
+ArrayList、LinkedList、Vector算是在⾯试题中⽐较常⻅的的知识点了。下⾯我就来做⼀个简单的总
+结：
+ArrayList：
+底层实现是数组
+ArrayList的默认初始化容量是10，每次扩容时候增加原先容量的⼀半，也就是变为原来的1.5倍 在增删时候，需要数组的拷⻉复制(navite ⽅法由C/C++实现)
+LinkedList：
+底层实现是双向链表[双向链表⽅便实现往前遍历]
+Vector：
+底层是数组，现在已少⽤，被ArrayList替代，原因有两个：
+Vector所有⽅法都是同步，有性能损失。
+Vector初始length是10 超过length时 以100%⽐率增⻓，相⽐于ArrayList更多消耗内存。
+总的来说：查询多⽤ArrayList，增删多⽤LinkedList。
+ArrayList增删慢不是绝对的(在数量⼤的情况下，已测试)：
+如果增加元素⼀直是使⽤ add() (增加到末尾)的话，那是ArrayList要快
+⼀直删除末尾的元素也是ArrayList要快【不⽤复制移动位置】
+⾄于如果删除的是中间的位置的话，还是ArrayList要快！
+但⼀般来说：增删多还是⽤LinkedList，因为上⾯的情况是极端的~

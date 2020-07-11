@@ -3,22 +3,22 @@ package review.lianbiao;
 /**
  * 遍历单链表
  */
-public class Node {
-    private static Node head = new Node();
+public class SinglyLinkedLIst {
+    private static SinglyLinkedLIst head = new SinglyLinkedLIst();
     //数据域
     public Integer data;
 
     //指针域，指向下⼀个节点
-    public Node next;
+    public SinglyLinkedLIst next;
 
-    public Node() {
+    public SinglyLinkedLIst() {
     }
 
-    public Node(int data) {
+    public SinglyLinkedLIst(int data) {
         this.data = data;
     }
 
-    public Node(int data, Node next) {
+    public SinglyLinkedLIst(int data, SinglyLinkedLIst next) {
         this.data = data;
         this.next = next;
     }
@@ -30,9 +30,9 @@ public class Node {
      */
     public static void addData(int value) {
         //初始化要加⼊的节点
-        Node newNode = new Node(value);
+        SinglyLinkedLIst newNode = new SinglyLinkedLIst(value);
         //临时节点
-        Node temp = head;
+        SinglyLinkedLIst temp = head;
         // 找到尾节点
         while (temp.next != null) {
             temp = temp.next;
@@ -41,10 +41,10 @@ public class Node {
         temp.next = newNode;
     }
 
-    public static void traverse(Node head) {
+    public static void traverse(SinglyLinkedLIst head) {
 
         //临时节点，从⾸节点开始
-        Node temp = head.next;
+        SinglyLinkedLIst temp = head.next;
         while (temp != null) {
             if (temp.data != null) {
                 System.out.println(temp.data);
@@ -74,18 +74,18 @@ public class Node {
      * @param index
      * @param value
      */
-    public static void insertNode(Node head, int index, int value) {
+    public static void insertNode(SinglyLinkedLIst head, int index, int value) {
         //⾸先需要判断指定位置是否合法，
         if (index < 1 || index > linkListLength(head) + 1) {
             System.out.println("插⼊位置不合法。");
             return;
         }
         //临时节点，从头节点开始
-        Node temp = head;
+        SinglyLinkedLIst temp = head;
         //记录遍历的当前位置
         int currentPos = 0;
         //初始化要插⼊的节点
-        Node insertNode = new Node(value);
+        SinglyLinkedLIst insertNode = new SinglyLinkedLIst(value);
         while (temp.next != null) {
             //找到上⼀个节点的位置了
             if ((index - 1) == currentPos) {
@@ -106,17 +106,17 @@ public class Node {
      * @param head
      * @param index
      */
-    public static void deleteNode(Node head, int index){
+    public static void deleteNode(SinglyLinkedLIst head, int index){
         if (index < 1 || index > linkListLength(head) + 1){
             System.out.println("删除节点有误");
             return;
         }
-        Node temp = head;
+        SinglyLinkedLIst temp = head;
         int currentPos = 0;
         while (temp.next != null){
             if ((index-1) == currentPos){
                 //存储被删除节点
-                Node deleteNode = temp.next;
+                SinglyLinkedLIst deleteNode = temp.next;
                 temp.next = temp.next.next;
                 deleteNode.next = null;
                 return;
@@ -133,10 +133,10 @@ public class Node {
      变⼀下，就可以删除了～
      * @param head 头指针
      */
-    public static int linkListLength(Node head) {
+    public static int linkListLength(SinglyLinkedLIst head) {
         int length = 0;
         //临时节点，从⾸节点开始
-        Node temp = head.next;
+        SinglyLinkedLIst temp = head.next;
         // 找到尾节点
         while (temp != null) {
             length++;
