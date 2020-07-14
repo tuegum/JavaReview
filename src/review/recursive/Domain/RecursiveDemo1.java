@@ -63,11 +63,11 @@ public class RecursiveDemo1 {
     public static void hanoi(int n, char start, char transfer, char target) {
         //只有⼀个盘⼦，直接搬到⽬标柱⼦
         if (n == 1) {
-            System.out.println(start + "---->" + target);
+            System.out.println("第" + ++count + "次" + start + "---->" + target);
         } else {
             //起始柱⼦借助⽬标柱⼦将盘⼦都移动到中转柱⼦中(除了最⼤的盘⼦)
             hanoi(n - 1, start, target, transfer);
-            System.out.println(start + "---->" + target);
+            System.out.println("第" + ++count + "次" + start + "---->" + target);
             //中转柱⼦借助起始柱⼦将盘⼦都移动到⽬标柱⼦中
             hanoi(n - 1, transfer, start, target);
         }
