@@ -1,0 +1,111 @@
+
+        ****使用序列化发送对象，对象的数据量比较大，发送效率低****
+        ****转换为二进制文件发送的****
+一、基本概念
+
+1、序列化和反序列化的定义：
+
+    (1)Java序列化就是指把Java对象转换为字节序列的过程
+
+        Java反序列化就是指把字节序列恢复为Java对象的过程。
+
+   (2)序列化最重要的作用：在传递和保存对象时.保证对象的完整性和可传递性。对象转换为有序字节流,以便在网络上传输或者保存在本地文件中。
+
+       反序列化的最重要的作用：根据字节流中保存的对象状态及描述信息，通过反序列化重建对象。
+
+   总结：核心作用就是对象状态的保存和重建。（整个过程核心点就是字节流中所保存的对象状态及描述信息）
+
+ 
+
+2、json/xml的数据传递：
+
+ 在数据传输(也可称为网络传输)前，先通过序列化工具类将Java对象序列化为json/xml文件。
+
+在数据传输(也可称为网络传输)后，再将json/xml文件反序列化为对应语言的对象
+
+ 
+
+3、序列化优点：
+
+ ①将对象转为字节流存储到硬盘上，当JVM停机的话，字节流还会在硬盘上默默等待，等待下一次JVM的启动，把序列化的对象，通过反序列化为原来的对象，并且序列化的二进制序列能够减少存储空间（永久性保存对象）。
+
+ ②序列化成字节流形式的对象可以进行网络传输(二进制形式)，方便了网络传输。
+
+ ③通过序列化可以在进程间传递对象。
+
+ 
+
+4、序列化算法需要做的事：
+
+  ① 将对象实例相关的类元数据输出。
+
+  ② 递归地输出类的超类描述直到不再有超类。
+
+  ③ 类元数据输出完毕后，从最顶端的超类开始输出对象实例的实际数据值。
+
+  ④ 从上至下递归输出实例的数据。
+
+ 
+
+二、Java实现序列化和反序列化的过程
+
+   1、实现序列化的必备要求：
+
+       只有实现了Serializable或者Externalizable接口的类的对象才能被序列化为字节序列。（不是则会抛出异常） 
+
+   2、JDK中序列化和反序列化的API：
+
+      ①java.io.ObjectInputStream：对象输入流。
+
+          该类的readObject()方法从输入流中读取字节序列，然后将字节序列反序列化为一个对象并返回。
+
+     ②java.io.ObjectOutputStream：对象输出流。
+
+          该类的writeObject(Object obj)方法将将传入的obj对象进行序列化，把得到的字节序列写入到目标输出流中进行输出。
+
+ 3、实现序列化和反序列化的三种实现：
+
+  ①若Student类仅仅实现了Serializable接口，则可以按照以下方式进行序列化和反序列化。
+
+             ObjectOutputStream采用默认的序列化方式，对Student对象的非transient的实例变量进行序列化。 
+             ObjcetInputStream采用默认的反序列化方式，对Student对象的非transient的实例变量进行反序列化。
+
+  ②若Student类仅仅实现了Serializable接口，并且还定义了readObject(ObjectInputStream in)和writeObject(ObjectOutputSteam out)，则采用以下方式进行序列化与反序列化。
+
+           ObjectOutputStream调用Student对象的writeObject(ObjectOutputStream out)的方法进行序列化。 
+           ObjectInputStream会调用Student对象的readObject(ObjectInputStream in)的方法进行反序列化。
+
+  ③若Student类实现了Externalnalizable接口，且Student类必须实现readExternal(ObjectInput in)和writeExternal(ObjectOutput out)方法，则按照以下方式进行序列化与反序列化。
+
+           ObjectOutputStream调用Student对象的writeExternal(ObjectOutput out))的方法进行序列化。 
+           ObjectInputStream会调用Student对象的readExternal(ObjectInput in)的方法进行反序列化。
+三、序列化和反序列化的注意点：
+
+①序列化时，只对对象的状态进行保存，而不管对象的方法；
+
+②当一个父类实现序列化，子类自动实现序列化，不需要显式实现Serializable接口；
+
+③当一个对象的实例变量引用其他对象，序列化该对象时也把引用对象进行序列化；
+
+④并非所有的对象都可以序列化，至于为什么不可以，有很多原因了，比如：
+
+安全方面的原因，比如一个对象拥有private，public等field，对于一个要传输的对象，比如写到文件，或者进行RMI传输等等，在序列化进行传输的过程中，这个对象的private等域是不受保护的；
+
+资源分配方面的原因，比如socket，thread类，如果可以序列化，进行传输或者保存，也无法对他们进行重新的资源分配，而且，也是没有必要这样实现；
+
+⑤声明为static和transient类型的成员数据不能被序列化。因为static代表类的状态，transient代表对象的临时数据。
+
+⑥序列化运行时使用一个称为 serialVersionUID 的版本号与每个可序列化类相关联，该序列号在反序列化过程中用于验证序列化对象的发送者和接收者是否为该对象加载了与序列化兼容的类。为它赋予明确的值。显式地定义serialVersionUID有两种用途：
+
+在某些场合，希望类的不同版本对序列化兼容，因此需要确保类的不同版本具有相同的serialVersionUID；
+
+在某些场合，不希望类的不同版本对序列化兼容，因此需要确保类的不同版本具有不同的serialVersionUID。
+
+⑦Java有很多基础类已经实现了serializable接口，比如String,Vector等。但是也有一些没有实现serializable接口的；
+
+⑧如果一个对象的成员变量是一个对象，那么这个对象的数据成员也会被保存！这是能用序列化解决深拷贝的重要原因；
+
+注意：浅拷贝请使用Clone接口的原型模式。
+————————————————
+版权声明：本文为CSDN博主「tree_ifconfig」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/tree_ifconfig/article/details/82766587
