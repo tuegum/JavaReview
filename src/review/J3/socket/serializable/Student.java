@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Student implements Serializable {
+    private static final long serialVersionUID = -6743567631108323096L;
+
     private int number;
     private String name;
     private int age;
