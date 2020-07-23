@@ -16,32 +16,32 @@ public class FileServer extends ServerSocket {
     private FileOutputStream fos;
 
     public FileServer() throws Exception {
-        server=new ServerSocket(SERVER_PORT);
+        server = new ServerSocket(SERVER_PORT);
     }
 
     public void task() throws IOException {
         System.out.println("======== 等待连接 ========");
         Socket socket = server.accept();
-        System.out.println(" Ip:"+socket.getInetAddress()+"已连接");
+        System.out.println(" Ip:" + socket.getInetAddress() + "已连接");
         try {
             dis = new DataInputStream(socket.getInputStream());
             // 文件名和长度
             String fileName = dis.readUTF();
             long fileLength = dis.readLong();
             File directory = new File("D:\\tuegum\\interest\\japanese\\copy_1");
-            if(!directory.exists()) {
+            if (!directory.exists()) {
                 directory.mkdirs();
             }
             File file = new File(directory.getAbsolutePath() + File.separatorChar + fileName);
 
             fos = new FileOutputStream(file);
-            System.out.println("file。。。。。。。。。。。。。。"+file);
-            System.out.println("fileName。。。。。。。。。。。。。。"+fileName);
+            System.out.println("file。。。。。。。。。。。。。。" + file);
+            System.out.println("fileName。。。。。。。。。。。。。。" + fileName);
 
             System.out.println("======== 开始接收文件 ========");
             byte[] bytes = new byte[1024];
             int length = 0;
-            while((length = dis.read(bytes, 0, bytes.length)) != -1) {
+            while ((length = dis.read(bytes, 0, bytes.length)) != -1) {
                 fos.write(bytes, 0, length);
                 fos.flush();
             }
@@ -51,9 +51,9 @@ public class FileServer extends ServerSocket {
             e.printStackTrace();
         } finally {
             try {
-                if(fos != null)
+                if (fos != null)
                     fos.close();
-                if(dis != null)
+                if (dis != null)
                     dis.close();
                 socket.close();
             } catch (IOException e) {
@@ -71,5 +71,4 @@ public class FileServer extends ServerSocket {
         }
     }
 }
-
 
