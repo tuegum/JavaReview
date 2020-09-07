@@ -27,13 +27,15 @@ public class GoodsDao {
     public List<Goods> findAll(){
         String sql = "select * from goods";
         List<Map<String, Object>> maps = template.queryForList(sql);
+        return getGoodList(maps);
+    }
+
+    public List<Goods> getGoodList(List<Map<String, Object>> maps){
         List<Goods> list = new ArrayList<>();
         for (Map<String, Object> map : maps) {
             list.add(new Goods((Integer)map.get("id"),(String)map.get("name"),(double)map.get("price"),(String)map.get("location")));
         }
         return list;
     }
-
-
 
 }
